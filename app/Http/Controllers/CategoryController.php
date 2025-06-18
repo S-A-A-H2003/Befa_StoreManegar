@@ -42,15 +42,14 @@ class CategoryController extends Controller
             $path = $request->file('picture')->store('/category/pictures' ,'public');
         }
         $validation['picture'] = $path;
-        // try {
+        try {
             DB::beginTransaction();
             $category = Category::create($validation);
             $category->products()->attach($request->input('checkboxes') , ["create_at" => now()]);
             DB::commit();
-
-        // } catch (\Throwable $th) {
-        //     DB::rollBack();
-        // }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
         return redirect()->route('category.index')->with('success' , 'The Category '.$category->name ?? ' '.' is created 👍');
     }
@@ -58,7 +57,11 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         $products = Product::all();
-        return view('crud.category.edit' , compact('category' , 'products'));
+        $productsInCategory = [];
+        foreach ($category->products as $product) {
+            $productsInCategory[] = $product->id;
+        }
+        return view('crud.category.edit' , compact('category' , 'products' , 'productsInCategory'));
     }
 
     public function update(UpdateCategoryRequest $request , Category $category)
@@ -75,15 +78,20 @@ class CategoryController extends Controller
 
 
 
-        // try {
+        try {
             DB::beginTransaction();
             $category->update($validation);
-            $x = $category->products()->sync($request->input('checkboxes'));//General error: 1364 Field 'create_at' doesn't have a default value
+            $data = [];
+            if ($request->input('checkboxes')) {
+                foreach ($request->input('checkboxes') as $id) {
+                   $data[$id] = ['create_at' => now()];
+                }
+            }
+            $category->products()->sync($data);
             DB::commit();
-
-        // } catch (\Throwable $th) {
-        //     DB::rollBack();
-        // }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
         if ($old && $old != $category->picture) {
             Storage::disk('public')->delete($old);

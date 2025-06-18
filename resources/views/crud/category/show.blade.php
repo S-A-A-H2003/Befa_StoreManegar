@@ -18,7 +18,7 @@
             <p class=" text-gray-500">Products</p>
             <div class=" rounded-md shadow-md p-3 w-full h-[20vh] overflow-hidden">
                 @forelse ($category->products as $product)
-                <div class=" flex items-center">
+                <div class=" flex items-center my-2">
                     <img src="{{$product->picture}}" class="w-9 h-9 rounded-full mx-2" alt="">
                     <p class=" text-gray-500">{{$product->name}} <a href="{{route('product.show' , $product->id)}}"
                             class="text-blue-600 hover:underline dark:text-blue-500">view Product</a>.</p>

@@ -17,12 +17,16 @@
                     <label for="checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$product->name}} <a href="{{route('product.show' , $product->id)}}" class="text-blue-600 hover:underline dark:text-blue-500">view Product</a>.</label>
                 </div>
             @endforeach
+            {{-- need some edit --}}
             @foreach($products as $product)
-                <div class="flex items-center mb-4">
-                    <input type="checkbox" name="checkboxes[]" value="{{$product->id}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$product->name}} <a href="{{route('product.show' , $product->id)}}" class="text-blue-600 hover:underline dark:text-blue-500">view Product</a>.</label>
-                </div>
+                @if (!in_array($product->id , $productsInCategory))
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" name="checkboxes[]" value="{{$product->id}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$product->name}} <a href="{{route('product.show' , $product->id)}}" class="text-blue-600 hover:underline dark:text-blue-500">view Product</a>.</label>
+                    </div>
+                @endif
             @endforeach
+            {{-- to here --}}
         </div>
        <button type="submit" class="px-3 py-2  mr-3 text-sm font-medium text-center text-white bg-orange-500 rounded-lg hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-700">EDIT</button>
 
