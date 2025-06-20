@@ -6,8 +6,10 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Policies\CategoryPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,6 +17,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
+        //Gate::authorize('viewAny' , [CategoryPolicy::class]);
         $success = Session::get('success');
         $categorys = Category::search($request , ['name'])->paginate('4');
         $count = Category::count();
@@ -23,18 +26,21 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
+        //Gate::authorize('view' , [CategoryPolicy::class]);
         $product = $category->products();
         return view('crud.category.show' , compact('category' , 'product'));
     }
 
     public function create()
     {
+        //Gate::authorize('create' , [CategoryPolicy::class]);
         $products = Product::all();
         return view('crud.category.create' , compact('products'));
     }
 
     public function store(StoreCategoryRequest $request)
     {
+        //Gate::authorize('create' , [CategoryPolicy::class]);
         $validation = $request->validated();
 
         if($request->hasFile('picture'))
@@ -42,27 +48,32 @@ class CategoryController extends Controller
             $path = $request->file('picture')->store('/category/pictures' ,'public');
         }
         $validation['picture'] = $path;
-        // try {
+        try {
             DB::beginTransaction();
             $category = Category::create($validation);
             $category->products()->attach($request->input('checkboxes') , ["create_at" => now()]);
             DB::commit();
-
-        // } catch (\Throwable $th) {
-        //     DB::rollBack();
-        // }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
         return redirect()->route('category.index')->with('success' , 'The Category '.$category->name ?? ' '.' is created 👍');
     }
 
     public function edit(Category $category)
     {
+        //Gate::authorize('update' , [CategoryPolicy::class]);
         $products = Product::all();
-        return view('crud.category.edit' , compact('category' , 'products'));
+        $productsInCategory = [];
+        foreach ($category->products as $product) {
+            $productsInCategory[] = $product->id;
+        }
+        return view('crud.category.edit' , compact('category' , 'products' , 'productsInCategory'));
     }
 
     public function update(UpdateCategoryRequest $request , Category $category)
     {
+        //Gate::authorize('update' , [CategoryPolicy::class]);
         $validation = $request->validated();
 
         $old = $category->picture;
@@ -75,15 +86,20 @@ class CategoryController extends Controller
 
 
 
-        // try {
+        try {
             DB::beginTransaction();
             $category->update($validation);
-            $x = $category->products()->sync($request->input('checkboxes'));//General error: 1364 Field 'create_at' doesn't have a default value
+            $data = [];
+            if ($request->input('checkboxes')) {
+                foreach ($request->input('checkboxes') as $id) {
+                   $data[$id] = ['create_at' => now()];
+                }
+            }
+            $category->products()->sync($data);
             DB::commit();
-
-        // } catch (\Throwable $th) {
-        //     DB::rollBack();
-        // }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
         if ($old && $old != $category->picture) {
             Storage::disk('public')->delete($old);
@@ -94,43 +110,10 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        //Gate::authorize('delete' , [CategoryPolicy::class]);
         $category->delete();
 
         return redirect()->route('category.index')->with('success' , 'The Category '.$category->name.'is deleted 👍');
     }
 
-
-    public function trash()
-    {
-
-        $success = Session::get('success');
-
-        $categoryTrash = Category::onlyTrash()->all();
-
-        return view('crud.category.trash' , compact('categoryTrash' , 'success'));
-
-    }
-
-
-    public function restore($id)
-    {
-        $categoryTrash = Category::onlyTrash()->findOrFail($id);
-
-        $categoryTrash->restore();
-
-        return redirect()->route('category.trash')->with('success' , 'The Category '.$categoryTrash->name.'is restore 👍');
-
-    }
-
-
-    public function forcDelete($id)
-    {
-        $categoryTrash = Category::withTrash()->findOrFail($id);
-
-        $categoryTrash->forcDelete();
-
-        Storage::disk('public')->delete($categoryTrash->picture);
-
-        return redirect()->route('category.trash')->with('success' , 'The Category '.$categoryTrash->name.'is deleted 👍');
-    }
 }

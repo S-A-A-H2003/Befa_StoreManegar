@@ -28,7 +28,7 @@
 
         @forelse ($notifications as $notification)
         @if(!$notification->read_at)
-        <a href="{{$notification->data['link']}}??id={{$$notification->id}}" class="flex px-4 py-3 hover:bg-gray-100">
+        <a href="{{$notification->data['link']}}??nid={{$notification->id}}" class="flex px-4 py-3 hover:bg-gray-100">
             <div class="shrink-0">
                 <img class="rounded-full w-11 h-11" src="{{$notification->data['img']}}" alt="Jese image">
                 <div
@@ -53,7 +53,7 @@
             </div>
         </a>
         @else
-        <a href="{{$notification->data['link']}}" class="flex px-4 py-3 hover:bg-gray-100">
+        <a href="{{$notification->data['link']}}??nid={{$notification->id}}" class="flex px-4 py-3 hover:bg-gray-100">
             <div class="shrink-0">
                 <img class="rounded-full w-11 h-11" src="{{$notification->data['img']}}" alt="Jese image">
                 <div

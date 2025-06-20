@@ -10,14 +10,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/admin/category/trash' , [CategoryController::class , 'trash'])->name('category.trash');
-Route::put('/admin/category/restore' , [CategoryController::class , 'restore'])->name('category.restore');
-Route::delete('/admin/category/forceDelete' , [CategoryController::class , 'forceDelete'])->name('category.forceDelete');
-
-Route::get('/admin/product/trash' , [productController::class , 'trash'])->name('product.trash');
-Route::put('/admin/product/restore' , [productController::class , 'restore'])->name('product.restore');
-Route::delete('/admin/product/forceDelete' , [productController::class , 'forceDelete'])->name('product.forceDelete');
-
 Route::get('/setting' , [SettingController::class , 'edit'])->name('setting.edit');
 Route::put('/setting' , [SettingController::class , 'update'])->name('setting.update');
 Route::delete('/setting/default' , [SettingController::class , 'default'])->name('setting.default');

@@ -16,9 +16,11 @@ class NotificationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->query('id')) {
-            $Notification = Auth::user()->notifications->where('id' , $request->id);
-            $Notification->markAsRead();
+        if ($request->has('nid') && $request->user()) {
+            $Notification = Auth::user()->notifications->unreadNotifications()->find($request->nid);
+            if ($Notification) {
+                $Notification->markAsRead();
+            }
         }
         return $next($request);
     }

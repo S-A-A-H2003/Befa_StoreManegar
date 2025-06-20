@@ -7,32 +7,37 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
-use App\Services\Product\BasicCrudProcessToProducts;
+use App\Policies\ProductPolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
-    public function index(Request $request , BasicCrudProcessToProducts $index)
+    public function index(Request $request)
     {
+        //Gate::authorize('viewAny' , [ProductPolicy::class]);
         $success = session('success');
-        $products = $index->index($request);
+        $products = Product::search($request ,['name'])->paginate("15");
         return view('crud.product.index' , compact('success' , 'products'));
 
     }
 
     public function show(Product $product)
     {
+        //Gate::authorize('view' , [ProductPolicy::class]);
         return view('crud.product.show' , compact('product'));
     }
 
     public function create()
     {
+        //Gate::authorize('create' , [ProductPolicy::class]);
         $categorys = Category::all();
         return view('crud.product.create' , compact('categorys'));
     }
 
     public function store(StoreProductRequest $request)
     {
+        //Gate::authorize('create' , [ProductPolicy::class]);
         $validated = $request->validated();
         if ($request->hasFile('picture')) {
             $path = $request->file('picture')->store('/product/pictures' , 'public');
@@ -46,11 +51,13 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+        //Gate::authorize('update' , [ProductPolicy::class]);
         return view('crud.product.edit' , compact('product'));
     }
 
     public function update(UpdateProductRequest $request , Product $product)
     {
+        //Gate::authorize('update' , [ProductPolicy::class]);
         $validated = $request->validated();
         if ($request->hasFile('picture')) {
              $path = $request->file('picture')->store('/product/pictures' , 'public');
@@ -63,25 +70,9 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        //Gate::authorize('delete' , [ProductPolicy::class]);
         Product::destroy($product->id);
         return redirect()->route('product.index')->with('success' , __('Deleted ' . $product->name));
     }
 
-
-    public function trash(Product $product)
-    {
-
-    }
-
-
-    public function restore(Product $product)
-    {
-
-    }
-
-
-    public function forcDelete($id)
-    {
-
-    }
 }

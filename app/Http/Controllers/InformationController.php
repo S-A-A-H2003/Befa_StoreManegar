@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateInformationRequest;
 use App\Models\Information;
+use App\Policies\InformationPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class InformationController extends Controller
 {
     public function update(UpdateInformationRequest $request)
     {
+        //Gate::authorize('update' , [InformationPolicy::class]);
         $validation = $request->validated();
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('/profile' , 'public');

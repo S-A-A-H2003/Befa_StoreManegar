@@ -39,7 +39,7 @@ class NewProductNotification extends Notification
     {
         return (new MailMessage)
             ->line('new product')
-            ->action('clic here to go', url('/'))
+            ->action('clic here to go', url(route('product.show' , $this->product->product->id)))
             ->line('Thank you for using our application!');
     }
 
