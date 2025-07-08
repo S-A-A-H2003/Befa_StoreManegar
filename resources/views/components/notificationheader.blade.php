@@ -28,6 +28,7 @@
             <a href="{{$notification->data['link']}}??nid={{$notification->id}}" class="flex px-4 py-3 hover:bg-gray-100">
                 <div class="shrink-0">
                     <img class="rounded-full w-11 h-11" src="{{$notification->data['img']}}" alt="Jese image">
+
                 </div>
                 <div class="w-full ps-3">
                     <div class="text-gray-500 text-sm mb-1.5">{{$notification->data['title']}}<span

@@ -19,7 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'language' => LanguageMiddleware::class
 
         ]);
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
