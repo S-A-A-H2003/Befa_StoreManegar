@@ -45,5 +45,7 @@
     "Unauthorized": "غير مصرّح",
     "Verify Email Address": "التحقق من عنوان البريد الإلكتروني",
     "Whoops!": "عذراً!",
-    "You are receiving this email because we received a password reset request for your account.": "لقد استلمت هذا الإيميل لأننا استقبلنا طلباً لاستعادة كلمة مرور حسابك."
+    "You are receiving this email because we received a password reset request for your account.": "لقد استلمت هذا الإيميل لأننا استقبلنا طلباً لاستعادة كلمة مرور حسابك.",
+    "Store Manegar":"إدارة المتجر",
+    "CREATE" : "إنشاء"
 }

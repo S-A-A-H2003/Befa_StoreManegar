@@ -16,15 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        Product::factory(100)->create();
-        // User::factory()->create([
-        //     'name' => 'Saeed Alaa Abu Halima',
-        //     'email' => 'Saeed1@gmail.com',
-        //     'password' => '1111',
-        // ]);
-        Category::factory(100)->create();
-        // $user = User::findOrFail('0197077a-87db-71d3-ae73-1e0b02e1fef0');
-        // Auth::login($user);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'Admin@gmail.com',
+            'role' => 'admin',
+            'password' => '11111111',
+        ]);
+        // Product::factory(1000)->create();
+        // Category::factory(1000)->create();
+
     }
 }

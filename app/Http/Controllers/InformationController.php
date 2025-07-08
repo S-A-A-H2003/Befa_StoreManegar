@@ -14,7 +14,7 @@ class InformationController extends Controller
 {
     public function update(UpdateInformationRequest $request)
     {
-        //Gate::authorize('update' , [InformationPolicy::class]);
+        Gate::authorize('update' , [Information::class]);
         $validation = $request->validated();
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('/profile' , 'public');

@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotificationMiddleware
+class LanguageMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +17,7 @@ class NotificationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->has('nid') && $request->user()) {
-            $Notification = Auth::user()->notifications->find($request->nid);
-            if ($Notification) {
-                $Notification->markAsRead();
-            }
-        }
+        App::setLocale(Setting::get('local'));
         return $next($request);
     }
 }

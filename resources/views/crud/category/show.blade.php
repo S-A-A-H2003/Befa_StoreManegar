@@ -1,9 +1,10 @@
 @extends('layouts.super_admin')
 @section('content')
 
-<p class=" mx-14 mt-5 text-lg font-bold">Home /<a href="{{route('category.index')}}"
-        class=" text-blue-300 text-lg font-bold"> Category / <a href="{{URL::current()}}"
-            class=" text-blue-300 text-lg font-bold"> Show /</a></a>
+<p class=" mx-14 mt-5 text-lg font-bold">
+    <a href="{{route('dashboard')}}" class=" text-blue-600 font-mono ">Home/</a>
+    <a href="{{route('category.index')}}" class=" text-blue-600 font-mono ">Category/</a>
+    <a href="{{URL::current()}}" class=" text-blue-600 font-mono ">Show</a>
 </p>
 <x-general.container class=" p-10  pl-3 h-fit">
 

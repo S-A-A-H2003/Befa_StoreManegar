@@ -3,12 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class DashbordPolicy
 {
-
-    public function create(User $user): bool
+    public function dashbord(User $user)
     {
         return $user->role == 'admin';
     }

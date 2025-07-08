@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Middleware\NotificationMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,7 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        NotificationMiddleware::class;
+         $middleware->alias([
+            'notification' => NotificationMiddleware::class,
+            'language' => LanguageMiddleware::class
+
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

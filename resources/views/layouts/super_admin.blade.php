@@ -35,9 +35,8 @@
 
 
     {{-- js --}}
-
     @stack('js')
-    @vite(['resources/js/header.js'])
+    
 </body>
 
 </html>

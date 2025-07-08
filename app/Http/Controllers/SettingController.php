@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use App\Policies\SettingPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -14,7 +13,7 @@ class SettingController extends Controller
 {
     public function edit()
     {
-        //Gate::authorize('update' , [SettingPolicy::class]);
+        Gate::authorize('update' , [Setting::class]);
         $local = Setting::get('local');
         $logo = Setting::get('logo');
         $success = Session::get('success');
@@ -23,7 +22,7 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        //Gate::authorize('update' , [SettingPolicy::class]);
+        Gate::authorize('update' , [Setting::class]);
        foreach ($request->input('settings') as $name => $value) {
             Setting::set($name , $value);
        }
@@ -43,7 +42,7 @@ class SettingController extends Controller
 
     public function default()
     {
-        //Gate::authorize('default' , [SettingPolicy::class]);
+        Gate::authorize('default' , [Setting::class]);
        $logo = Setting::get('logo');
        $setting = Setting::where('user_id' , Auth::id());
        if ($setting) {

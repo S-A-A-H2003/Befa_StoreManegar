@@ -1,7 +1,10 @@
 @extends('layouts.super_admin')
 @section('content')
 
-<x-general.navbar/>
+<p class=" mx-14 mt-5 text-lg font-bold">
+    <a href="{{route('dashboard')}}" class=" text-blue-600 font-mono ">Home/</a>
+    <a href="{{URL::current()}}" class=" text-blue-600 font-mono ">Category</a>
+</p>
 
 <x-general.container class=" p-5 h-fit">
 

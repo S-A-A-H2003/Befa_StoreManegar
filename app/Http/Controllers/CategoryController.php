@@ -17,7 +17,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        //Gate::authorize('viewAny' , [CategoryPolicy::class]);
+        Gate::authorize('viewAny' , [Category::class]);
         $success = Session::get('success');
         $categorys = Category::search($request , ['name'])->paginate('4');
         $count = Category::count();
@@ -26,21 +26,21 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        //Gate::authorize('view' , [CategoryPolicy::class]);
+        Gate::authorize('view' , [Category::class]);
         $product = $category->products();
         return view('crud.category.show' , compact('category' , 'product'));
     }
 
     public function create()
     {
-        //Gate::authorize('create' , [CategoryPolicy::class]);
+        Gate::authorize('create' , [Category::class]);
         $products = Product::all();
         return view('crud.category.create' , compact('products'));
     }
 
     public function store(StoreCategoryRequest $request)
     {
-        //Gate::authorize('create' , [CategoryPolicy::class]);
+        Gate::authorize('create' , [Category::class]);
         $validation = $request->validated();
 
         if($request->hasFile('picture'))
@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        //Gate::authorize('update' , [CategoryPolicy::class]);
+        Gate::authorize('update' , [Category::class]);
         $products = Product::all();
         $productsInCategory = [];
         foreach ($category->products as $product) {
@@ -73,7 +73,7 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request , Category $category)
     {
-        //Gate::authorize('update' , [CategoryPolicy::class]);
+        Gate::authorize('update' , [Category::class]);
         $validation = $request->validated();
 
         $old = $category->picture;
@@ -110,8 +110,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        //Gate::authorize('delete' , [CategoryPolicy::class]);
+        Gate::authorize('delete' , [Category::class]);
         $category->delete();
+        Storage::disk('public')->delete($category->picture);
 
         return redirect()->route('category.index')->with('success' , 'The Category '.$category->name.'is deleted 👍');
     }

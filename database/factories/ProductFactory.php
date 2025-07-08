@@ -21,7 +21,7 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->name(),
             'picture' => 'https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png',
-            'price' => fake()->numberBetween(200 , 1000),
+            'price' => fake()->numberBetween(1 , 1000),
             'price_before' => fake()->numberBetween(100 , 1000),
             'discription' => fake()->text(50),
             'rating' => fake()->numberBetween(0 , 5),

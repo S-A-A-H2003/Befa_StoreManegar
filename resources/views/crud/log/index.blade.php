@@ -1,11 +1,15 @@
 @extends('layouts.super_admin')
 @section('content')
 
-<x-general.navbar />
+<p class=" mx-14 mt-5 text-lg font-bold">
+    <a href="{{route('dashboard')}}" class=" text-blue-600 font-mono ">Home/</a>
+    <a href="{{URL::current()}}" class=" text-blue-600 font-mono ">Log</a>
+</p>
+
 <x-general.container class="p-5 h-fit">
 
     {{-- Table Header --}}
-    <x-general.table-header :value="$logs" name="product" route="{{route('product.create')}}" />
+    <x-general.table-header :value="$logs" />
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

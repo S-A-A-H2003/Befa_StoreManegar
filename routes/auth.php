@@ -6,13 +6,14 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
 
 Route::get('/setting' , [SettingController::class , 'edit'])->name('setting.edit');
-Route::put('/setting' , [SettingController::class , 'update'])->name('setting.update');
-Route::delete('/setting/default' , [SettingController::class , 'default'])->name('setting.default');
+Route::put('/setting' , [SettingController::class , 'update'])->middleware('language')->name('setting.update');
+Route::delete('/setting/default' , [SettingController::class , 'default'])->middleware('language')->name('setting.default');
 
 
 Route::put('/information' , [InformationController::class , 'update'])->name('information.update');
@@ -22,10 +23,13 @@ Route::get('/log' , [LogController::class , 'index'])->name('log.index');
 Route::get('/customer' , [CustomerController::class , 'index'])->name('customer.index');
 Route::get('/customer/{user}' , [CustomerController::class , 'show'])->name('customer.show');
 
+Route::get('/createNewAdmin' , [UserController::class , 'create'])->name('createNewAdmin');
+Route::post('/createNewAdmin/store' , [UserController::class , 'store'])->name('createNewAdmin.store');
 
 
 
-Route::prefix('/admin')->group(function () {
+
+Route::middleware('notification')->prefix('/admin')->group(function () {
     Route::resources([
         '/product'  => ProductController::class,
         '/category' => CategoryController::class,

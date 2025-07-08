@@ -11,8 +11,8 @@ class LogController extends Controller
 {
     public function index()
     {
-        //Gate::authorize('viewAny' , [LogPolicy::class]);
-        $logs = Log::paginate('15');
+        Gate::authorize('viewAny' , Log::class);
+        $logs = Log::orderBy('created_at' ,'desc')->paginate('15');
         return view('crud.log.index' , compact('logs'));
 
     }

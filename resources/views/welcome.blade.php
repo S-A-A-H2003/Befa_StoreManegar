@@ -9,7 +9,6 @@
     <div class=" w-[50vh] h-[50vh] rounded-md  flex flex-col justify-evenly items-center bg-gray-700">
         <h1 class=" uppercase font-mono text-white"> Welcom In Aliaa Befa Store</h1>
         <a href="{{ route('login') }}" class="font-mono p-3 bg-white rounded-md">Login</a>
-        <a href="{{ route('register')}}" class="font-mono p-3 bg-white rounded-md">Register</a>
     </div>
 </body>
 </html>

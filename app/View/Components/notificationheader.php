@@ -23,7 +23,9 @@ class notificationheader extends Component
      */
     public function render(): View|Closure|string
     {
-        $notifications = Auth::user()->notifications->take(5);
-        return view('components.notificationheader' , ['notifications' => $notifications]);
+        $notificationsUnRead = Auth::user()->unreadNotifications;
+        $notificationsRead = Auth::user()->readNotifications;
+
+        return view('components.notificationheader' , compact('notificationsUnRead' , 'notificationsRead'));
     }
 }
